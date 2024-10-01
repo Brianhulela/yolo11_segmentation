@@ -7,13 +7,13 @@ url, filename = ("https://images.unsplash.com/photo-1484353371297-d8cfd2895020?w
 urllib.request.urlretrieve(url, filename)    # Download the image
 
 # Load the input image using OpenCV
-image = cv2.imread("scene.jpg")
+image = cv2.imread(filename)
 
 # Load the model
 model = YOLO("yolo11n-seg.pt")  # load an official YOLO model
 
 # Predict with the model
-results = model("scene.jpg")  # predict on an image
+results = model(filename)  # predict on an image
 
 # Create an empty mask for segmentation
 segmentation_mask = np.zeros_like(image, dtype=np.uint8)
