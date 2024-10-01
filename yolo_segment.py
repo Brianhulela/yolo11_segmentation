@@ -17,3 +17,29 @@ results = model("scene.jpg")  # predict on an image
 
 # Create an empty mask for segmentation
 segmentation_mask = np.zeros_like(image, dtype=np.uint8)
+
+# Iterate over the results
+for i, r in enumerate(results):
+    # Iterate through the detected masks
+    for j, mask in enumerate(r.masks.xy):
+        # Convert the class tensor to an integer
+        class_id = int(r.boxes.cls[j].item())  # Extract the class ID as an integer
+        
+        # Check if the detected class corresponds to 'person' (class ID 0)
+        if class_id == 0:
+            # Convert mask coordinates to an integer format for drawing
+            mask = np.array(mask, dtype=np.int32)
+            
+            # Fill the segmentation mask with color (e.g., white for people)
+            cv2.fillPoly(segmentation_mask, [mask], (0, 255, 0))
+
+# Combine the original image with the segmentation mask
+segmentation_result = cv2.addWeighted(image, 1, segmentation_mask, 0.7, 0)
+
+# Save the output image with segmentation
+cv2.imwrite("output_segmentation.jpg", segmentation_result)
+
+# Optionally display the image (make sure you're running in a GUI environment)
+cv2.imshow("Segmentation Result", segmentation_result)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
