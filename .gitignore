@@ -1,1 +1,5 @@
 /env
+segmen_cover.drawio
+scene.jpg
+output_segmentation.jpg
+yolo11n-seg.pt
